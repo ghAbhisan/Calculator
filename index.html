@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basic Calculator</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+  }
+
+  .calculator {
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .screen {
+    font-size: 24px;
+    text-align: right;
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+  }
+
+  .buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  button {
+    font-size: 18px;
+    padding: 10px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+  <div class="calculator">
+    <div class="screen" id="screen">0</div>
+    <div class="buttons">
+      <button id="clear">C</button>
+      <button id="backspace">←</button>
+      <button id="divide">/</button>
+      <button id="multiply">*</button>
+      <button id="seven">7</button>
+      <button id="eight">8</button>
+      <button id="nine">9</button>
+      <button id="subtract">-</button>
+      <button id="four">4</button>
+      <button id="five">5</button>
+      <button id="six">6</button>
+      <button id="add">+</button>
+      <button id="one">1</button>
+      <button id="two">2</button>
+      <button id="three">3</button>
+      <button id="equals" colspan="2">=</button>
+      <button id="zero">0</button>
+      <button id="decimal">.</button>
+    </div>
+  </div>
+
+  <script>
+    const screen = document.getElementById('screen');
+    const buttons = document.querySelectorAll('button');
+
+    let input = '';
+    let operator = '';
+    let firstNumber = '';
+    let secondNumber = '';
+    let result = '';
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const buttonText = button.textContent;
+
+        if (buttonText >= '0' && buttonText <= '9' || buttonText === '.') {
+          input += buttonText;
+          screen.textContent = input;
+        } else if (buttonText === '+' || buttonText === '-' || buttonText === '*' || buttonText === '/') {
+          operator = buttonText;
+          firstNumber = input;
+          input = '';
+        } else if (buttonText === '=') {
+          secondNumber = input;
+
+          if (operator === '+') {
+            result = parseFloat(firstNumber) + parseFloat(secondNumber);
+          } else if (operator === '-') {
+            result = parseFloat(firstNumber) - parseFloat(secondNumber);
+          } else if (operator === '*') {
+            result = parseFloat(firstNumber) * parseFloat(secondNumber);
+          } else if (operator === '/') {
+            result = parseFloat(firstNumber) / parseFloat(secondNumber);
+          }
+
+          screen.textContent = result;
+          input = result;
+          firstNumber = '';
+          secondNumber = '';
+          operator = '';
+        } else if (buttonText === 'C') {
+          input = '';
+          operator = '';
+          firstNumber = '';
+          secondNumber = '';
+          result = '';
+          screen.textContent = '0';
+        } else if (buttonText === '←') {
+          input = input.slice(0, -1);
+          screen.textContent = input;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
